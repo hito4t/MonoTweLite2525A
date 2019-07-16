@@ -11,11 +11,10 @@ public class MonoTweLite2525ATest {
         }
         MonoTweLite2525A sensor = new MonoTweLite2525A(portName);
 
-        byte[] bytes = sensor.read();
-        for (byte b : bytes) {
-        	System.out.print(String.format("%02X ", b));
+        for (int i = 0; i < 20; i++) {
+            MonoTweLite2525AData data = sensor.read();
+            System.out.println(String.format("SID=%04X, value1=%d, value2=%d, value3=%d, value4=%d", data.getSID(), data.getValue1(), data.getValue2(), data.getValue3(), data.getValue4()));
         }
-        System.out.println();
 
         sensor.close();
     }
