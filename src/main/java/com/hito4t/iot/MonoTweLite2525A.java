@@ -15,12 +15,20 @@ public class MonoTweLite2525A implements AutoCloseable {
     }
 
     public MonoTweLite2525AData read() throws IOException {
+    	return read(-1);
+    }
+
+    public MonoTweLite2525AData read(long timeout) throws IOException {
+    	long start = System.currentTimeMillis();
         while (true) {
             byte[] header = new byte[1];
             if (port.readBytes(header, header.length) == 1) {
                 if (header[0] == ':') {
                     break;
                 }
+            }
+            if (timeout >= 0 && start + timeout > System.currentTimeMillis()) {
+            	return null;
             }
         }
 
