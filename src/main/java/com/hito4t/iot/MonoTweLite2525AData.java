@@ -4,14 +4,16 @@ import java.io.IOException;
 
 public class MonoTweLite2525AData {
 
-    private int sid;
-    private short value1;
-    private short value2;
-    private short value3;
-    private short value4;
+    private final long time;
+    private final int sid;
+    private final short value1;
+    private final short value2;
+    private final short value3;
+    private final short value4;
 
 
-    public MonoTweLite2525AData(byte[] bytes) throws IOException {
+    public MonoTweLite2525AData(long time, byte[] bytes) throws IOException {
+        this.time = time;
         byte sum = 0;
         for (int i = 0; i < bytes.length ; i++) {
             sum += bytes[i];
@@ -26,6 +28,10 @@ public class MonoTweLite2525AData {
         value2 = getValue(bytes, 1);
         value3 = getValue(bytes, 2);
         value4 = getValue(bytes, 3);
+    }
+
+    public long getTime() {
+        return time;
     }
 
     public int getSID() {

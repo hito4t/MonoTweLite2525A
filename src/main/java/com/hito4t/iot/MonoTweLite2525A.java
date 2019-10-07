@@ -15,11 +15,11 @@ public class MonoTweLite2525A implements AutoCloseable {
     }
 
     public MonoTweLite2525AData read() throws IOException {
-    	return read(-1);
+        return read(-1);
     }
 
     public MonoTweLite2525AData read(long timeout) throws IOException {
-    	long start = System.currentTimeMillis();
+        long start = System.currentTimeMillis();
         while (true) {
             byte[] header = new byte[1];
             if (port.readBytes(header, header.length) == 1) {
@@ -32,12 +32,13 @@ public class MonoTweLite2525A implements AutoCloseable {
             }
         }
 
+        long time = System.currentTimeMillis();
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         byte[] buffer = new byte[2];
         while (true) {
             port.readBytes(buffer, buffer.length);
             if (buffer[0] == '\r' && buffer[1] == '\n') {
-                return new MonoTweLite2525AData(bytes.toByteArray());
+                return new MonoTweLite2525AData(time, bytes.toByteArray());
             }
 
             bytes.write(toInt(buffer[0], buffer[1]));
