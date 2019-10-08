@@ -2,6 +2,8 @@ package com.hito4t.iot;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fazecast.jSerialComm.SerialPort;
 
@@ -68,6 +70,7 @@ public class MonoTweLite2525A implements AutoCloseable {
     }
 
     private SerialPort getPort(String portName) throws Exception {
+        List<String> portNames = new ArrayList<String>();
         for (SerialPort port : SerialPort.getCommPorts()) {
             if (port.getSystemPortName().equals(portName)) {
                 port.setBaudRate(115200);
@@ -76,9 +79,11 @@ public class MonoTweLite2525A implements AutoCloseable {
                 }
                 port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING | SerialPort.TIMEOUT_WRITE_BLOCKING, 100, 100);
                 return port;
+            } else {
+                portNames.add(port.getSystemPortName());
             }
         }
-        throw new Exception("Not found.");
+        throw new Exception("Port \"" + portName + "\" is not found (found ports = " + portNames + ").");
     }
 
     private static void debug(String line) {
